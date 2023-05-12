@@ -66,11 +66,13 @@ import javax.measure.quantity.Speed;
 import javax.measure.quantity.Temperature;
 import javax.measure.quantity.Time;
 import javax.measure.quantity.Volume;
+
 import tech.units.indriya.AbstractSystemOfUnits;
 import tech.units.indriya.AbstractUnit;
 import tech.units.indriya.function.AddConverter;
 import tech.units.indriya.function.MultiplyConverter;
 import tech.units.indriya.function.RationalNumber;
+import tech.units.indriya.function.gravity.GravityConverter;
 
 /**
  * <p>
@@ -93,7 +95,7 @@ public class Units extends AbstractSystemOfUnits {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see SystemOfUnits#getName()
 	 */
 	@Override
@@ -400,7 +402,7 @@ public class Units extends AbstractSystemOfUnits {
 	 * of pressure) is 0 °C, while the boiling point is 100 °C.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static final Unit<Temperature> CELSIUS = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units, 
+	public static final Unit<Temperature> CELSIUS = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
 			new TransformedUnit(KELVIN, new AddConverter(273.15)), "Celsius", "\u2103");
 	// Not mapping to Temperature since temperature is mapped to Kelvin.
 
@@ -478,9 +480,9 @@ public class Units extends AbstractSystemOfUnits {
 			Volume.class);
 
 	/**
-	 * A unit of speed expressing the number of international kilometres per {@link #HOUR hour} 
+	 * A unit of speed expressing the number of international kilometres per {@link #HOUR hour}
 	 * (abbreviation <code>km/h</code>).
-	 * 
+	 *
 	 * @see <a href="https://en.wikipedia.org/wiki/Kilometres_per_hour"> Wikipedia: Kilometres per hour</a>
 	 */
 	public static final Unit<Speed> KILOMETRE_PER_HOUR = addUnit(METRE_PER_SECOND.multiply(RationalNumber.of(5, 18)))
@@ -521,7 +523,7 @@ public class Units extends AbstractSystemOfUnits {
 	/**
 	 * A unit of duration equal to 7 {@link #DAY} (standard name <code>wk</code>).
 	 */
-	public static final Unit<Time> WEEK = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units, 
+	public static final Unit<Time> WEEK = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
 			DAY.multiply(7), "Week", "wk");
 
 	/**
@@ -534,9 +536,9 @@ public class Units extends AbstractSystemOfUnits {
 	 * A unit of duration equal to 1/12 {@link #YEAR} (standard name <code>mo</code>).
 	 * @since 2.3
 	 */
-	public static final Unit<Time> MONTH = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units, 
+	public static final Unit<Time> MONTH = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
 			YEAR.divide(12), "Month", "mo");
-	
+
 	/**
 	 * A volume unit accepted for use with SI units (standard name <code>l</code>).
 	 *
@@ -544,6 +546,21 @@ public class Units extends AbstractSystemOfUnits {
 	 */
 	public static final Unit<Volume> LITRE = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
 			new TransformedUnit<Volume>(CUBIC_METRE, MultiplyConverter.ofRational(1, 1000)), "Litre", "l");
+
+
+
+	/////////////////
+	// NAVAL UNITS //
+	/////////////////
+	public static final Unit<Speed> KNOT = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
+		new TransformedUnit<Speed>(Units.METRE_PER_SECOND, MultiplyConverter.ofRational(1852, 3600)), "Knot", "kn");
+
+
+	public static Unit<Force> KG_FORCE = AbstractSystemOfUnits.Helper.addUnit(INSTANCE.units,
+																			  new TransformedUnit<>(Units.NEWTON, GravityConverter.getInstance()),
+																			  "kilogram-force",
+																			  "kp");
+
 
 	/**
 	 * Returns the unique instance of this class.
